@@ -1,0 +1,21 @@
+{% extends base_template %}
+
+{% load crispy_forms_tags %}
+{% block title %}Profile Update{% endblock title %}
+{% block main %}
+    
+        <div id="edit-form" class="row-cols-3">            
+            <form action="" class="col-10 offset-1 col-md-6 offset-md-3">
+                <h1 class="fs-1 text-capitalize text-center">Update Profile</h1>
+                {{ profile_form|crispy }}
+                <button type="submit" class="btn btn-success" hx-post="{% url 'profile-update' %}"                
+                hx-push-url="/accounts/profile/"
+                hx-trigger="click"
+                hx-target="#main-div"
+                hx-swap="innerHTML">
+                    Save
+                </button>
+            </form>            
+        </div>        
+
+{% endblock main %}        

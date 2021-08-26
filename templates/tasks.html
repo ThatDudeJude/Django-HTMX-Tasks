@@ -1,0 +1,99 @@
+{% extends base_template %}
+{% load humanize %}
+{% block title %}All{% endblock %}
+{% block main %}
+
+        <div id="tasks-list" class="row-cols-3">            
+            <div action="" class="col-10 offset-1 col-md-6 offset-md-3">
+                <h1 class="fs-1 text-center">{{ title }}</h1>                
+                <div class="d-flex justify-content-around my-2">                    
+                        <div>
+                            <input type="radio" name="shown-tasks"
+                            hx-get="{% url 'priorities' %}"
+                            hx-replace-url="{% url 'priorities' %}"
+                            hx-push-url="true"
+                            hx-trigger="change"
+                            hx-target="#main-div"
+                            hx-swap="innerHTML"
+                            {{ show_priorities }}
+                            >Show Priority Tasks</input>
+                        </div>
+                        <div>
+                            <input type="radio" name="shown-tasks"
+                            hx-get="{% url 'home' %}"
+                            hx-replace-url="{% url 'home' %}"
+                            hx-push-url="true"
+                            hx-trigger="change"
+                            hx-target="#main-div"
+                            hx-swap="innerHTML" {{ show_all }}>Show All Tasks</input>
+                        </div>                        
+                </div>
+                {% for task in tasks_list %}
+                <div class="card mb-3">
+                    {% if task.is_priority %}
+                    <div class="card-header" style="background-color: green; color: whitesmoke;">
+                        <div class="text-center mb-1"                        
+                        hx-get="{% url 'task' task.id %}"
+                        hx-push-url="true"
+                        hx-trigger="click"
+                        hx-target="#main-div"
+                        hx-swap="innerHTML" style="cursor: pointer;">{{ task.title }}</div>
+                        <div class="text-center">
+                            Modified: {{ task.updated|naturaltime }}
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="card-header bg-dark" style="color: ivory;">
+                        <div class="text-center mb-1"                        
+                        hx-get="{% url 'task' task.id %}"
+                        hx-push-url="true"
+                        hx-trigger="click"
+                        hx-target="#main-div"
+                        hx-swap="innerHTML" style="cursor: pointer;">{{ task.title }}</div>
+                        <div class="text-center">
+                            Modified: {{ task.updated|naturaltime }}
+                        </div>
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <p>{{ task.body|truncatechars:55 }}</p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-warning"
+                        hx-get="{% url 'edit' task.id %}"
+                        hx-push-url="true"
+                        hx-trigger="click"
+                        hx-target="#main-div"
+                        hx-swap="innerHTML"
+                        >Edit</button>                    
+                        <button class="btn btn-danger"
+                        hx-get="{% url 'delete' task.id %}"
+                        hx-replace-url="{% url 'delete' task.id %}"
+                        hx-trigger="click"
+                        hx-target="#main-div"
+                        hx-swap="innerHTML"
+                        >Delete</button>      
+                        </div>
+                        
+                    </div>
+
+                </div>
+                {% empty %}
+                   <div class="card">
+                       <div class="card-body">No Tasks Yet!</div>
+                   </div>
+                {% endfor %}
+                <div class="my-1">
+                    <button class="btn btn-success"
+                    hx-get="{% url 'create'%}"                
+                    hx-replace-url="/tasks/create/"
+                    hx-trigger="click"
+                    hx-target="#main-div"
+                    hx-swap="innerHTML"
+                    >Add Task</button>
+                </div>                  
+            </div>                      
+        </div>        
+
+{% endblock main %}        

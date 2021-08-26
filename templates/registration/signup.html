@@ -1,0 +1,24 @@
+{% extends base_template %}
+
+{% load crispy_forms_tags %}
+{% block title %}Sign Up{% endblock title %}
+{% block main %}
+
+    <div id="register-form" class="row-cols-3">
+        <form action="/accounts/register/" method="post" class="col-10 offset-1 col-md-6 offset-md-3">
+            {% csrf_token %}
+            <h1 class="fs-1 text-capitalize text-center">Register</h1>
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-success">
+                Register
+            </button>
+        </form>
+        <p class="col-10 offset-1 col-md-6 offset-md-3">Already have an account? Login <button class="btn btn-success"            
+            hx-get="/accounts/login/"
+            hx-push-url="true"
+                hx-trigger="click"
+                hx-target="#main-div"
+                hx-swap="innerHTML">Here</button>  
+        </p>        
+    </div>
+{% endblock main %}

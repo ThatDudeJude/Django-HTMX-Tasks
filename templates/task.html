@@ -1,0 +1,62 @@
+{% extends base_template %}
+{% load humanize %}
+{% block title %}View Task{% endblock %}
+{% block main %}
+
+        <div id="task" class="row-cols-3">            
+            
+            <div action="" class="col-10 offset-1 col-md-6 offset-md-3">
+
+                
+                <div class="card">
+                    {% if task.is_priority %}
+                    <div class="card-header" style="background-color: green; color: whitesmoke;">
+                        <h1 class="fs-3 text-center py-4">{{ task.title }}</h1>                        
+                        <div class="text-center">
+                            Modified: {{ task.updated|naturaltime }}
+                        </div>
+                    </div>
+                    {% else %} 
+                    <div class="card-header bg-dark" style="color: ivory;">
+                        <h1 class="fs-3 text-center py-4">{{ task.title }}</h1>                                                
+                        <div class="text-center">
+                            Modified: {{ task.updated|naturaltime }}
+                        </div>
+                    </div>
+                    {% endif %}
+                    <div class="card-body h-50">
+                        <p>{{ task.body }}</p>
+                    </div>
+                    <div class="card-footer">                        
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-warning"
+                            hx-get="{% url 'edit' task.id %}"
+                            hx-push-url="true"
+                            hx-trigger="click"
+                            hx-target="#main-div"
+                            hx-swap="innerHTML"
+                            >Edit</button>                    
+                            <button class="btn btn-danger"
+                            hx-get="{% url 'delete' task.id %}"
+                            hx-replace-url="{% url 'delete' task.id %}"
+                            hx-trigger="click"
+                            hx-target="#main-div"
+                            hx-swap="innerHTML"
+                            >Delete</button>      
+                        </div>
+                    </div>                                                
+                </div>
+                <div class="my-3">                    
+                    <button class="btn btn-success"
+            hx-get="/tasks/"
+            hx-push-url="true"
+            hx-trigger="click"
+            hx-target="#main-div"
+            hx-swap="innerHTML">View All Tasks</button>                    
+            </div>
+                </div>   
+                
+                
+        </div>        
+
+{% endblock main %}        

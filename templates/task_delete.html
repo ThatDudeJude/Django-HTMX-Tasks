@@ -1,0 +1,60 @@
+{% extends base_template %}
+{% block title %}All{% endblock %}
+{% block main %}
+
+        <div id="tasks-list" class="row-cols-3">            
+            <div action="" class="col-10 offset-1 col-md-6 offset-md-3">
+                <h1 class="fs-1 text-center">Delete</h1>
+                
+                <div class="card">
+                    <div class="card-body">
+                        <form action="" method="post">
+                            <p class="fs-4 fw-bolder">Delete: <span class="fs-5 fw-light">{{ task.title }}</span>?</p>
+                            
+                        </form>                        
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-danger" type="submit"
+                            hx-post="{% url 'delete' task.id %}"                            
+                            hx-trigger="click"
+                            hx-target="#main-div"
+                            hx-swap="innerHTML">
+                                Delete
+                            </button>
+                            <button class="btn btn-success" 
+                            hx-get="/"
+                            hx-push-url="true"
+                            hx-trigger="click"
+                            hx-target="#main-div"
+                            hx-swap="innerHTML">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <!-- <div class="my-3 d-flex justify-content-between">
+                    <a
+                    hx-get="{% url 'create'%}"                
+                    hx-replace-url="/tasks/create/"
+                    hx-trigger="click"
+                    hx-target="#main-div"
+                    hx-swap="innerHTML"
+                    >Add Task</a>
+
+                    <p>
+                        <a
+                        hx-get="/"
+                        hx-push-url="true"
+                        hx-trigger="click"
+                        hx-target="#main-div"
+                        hx-swap="innerHTML">View All Tasks</a>
+                    </p>
+                </div>  -->
+                                                
+            </div>                      
+        </div>        
+
+{% endblock main %}        

@@ -1,0 +1,21 @@
+{% extends base_template %}
+
+{% load crispy_forms_tags %}
+{% block title %}{{ action }}{% endblock title %}
+{% block main %}
+    
+        <div id="edit-form" class="row-cols-3">            
+            <form action="" class="col-10 offset-1 col-md-6 offset-md-3">
+                <h1 class="fs-1 text-capitalize text-center">{{ action }}</h1>
+                {{ form|crispy }}
+                <button type="submit" class="btn btn-success" hx-post="{{ url }}"
+                hx-push-url="{{ push_url }}"
+                hx-trigger="click"
+                hx-target="#main-div"
+                hx-swap="innerHTML">
+                    Save
+                </button>
+            </form>            
+        </div>        
+
+{% endblock main %}        
