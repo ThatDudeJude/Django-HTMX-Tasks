@@ -7,6 +7,7 @@ from .views import (
     CustomProfileView,
     CustomPasswordChangeView,
     CustomPasswordResetView,
+    CustomConfirmPasswordReset,
 )
 
 urlpatterns = [
@@ -20,5 +21,10 @@ urlpatterns = [
     ),
     path(
         "password_reset/", CustomPasswordResetView.as_view(), name="password-reset-form"
+    ),
+    path(
+        "confirm_password_reset/<uidb64>/<token>/",
+        CustomConfirmPasswordReset.as_view(),
+        name="confirm-password-reset",
     ),
 ]

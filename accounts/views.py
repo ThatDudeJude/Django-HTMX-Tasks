@@ -6,6 +6,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.encoding import force_bytes
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 from django.contrib.auth.forms import (
     PasswordChangeForm,
     PasswordResetForm,
@@ -45,17 +46,9 @@ class CustomLoginView(LoginView):
         context["base_template"] = self.main_base_template
         return context
 
-    # def post(self, request, *args, **kwargs):
-    #     print("Signing in")
-    #     context = self.get_context_data()
-    #     print(context)
-    #     return super().post(request, *args, **kwargs)
-
     def post(self, request, *args, **kwargs):
         form = self.get_form()
-        print(form.is_valid(), request.POST)
         if not form.is_valid():
-            print("Form is not valid")
             context = self.get_context_data()
             context["form"] = form
             context["base_template"] = self.base_base_template
@@ -120,7 +113,6 @@ class CustomProfileView(View):
             base_template = "main.html"
         else:
             base_template = "base.html"
-        print("User", self.profile.user.email)
         return render(
             request,
             "registration/profile.html",
@@ -154,9 +146,6 @@ class CustomProfileUpdateView(View):
                 "email": request.user.email,
             },
         )
-        print("User", self.profile.user.email)
-        print(request.user)
-        print("profile", profile_form.Meta.fields)
         return render(
             request,
             "registration/profile_form.html",
@@ -282,7 +271,12 @@ class CustomConfirmPasswordReset(View):
             if token_generator.check_token(user, token) and user is not None:
                 form = SetPasswordForm(user=user)
 
-                context = {"form": form, "base_template": "base.html"}
+                context = {
+                    "form": form,
+                    "base_template": "base.html",
+                    "uidb64": uidb64,
+                    "token": token,
+                }
 
                 return render(
                     request, "registration/password_reset_confirm.html", context
@@ -291,7 +285,7 @@ class CustomConfirmPasswordReset(View):
         context = {"message": "Bad request!", "base_template": "base.html"}
         return render(request, "error.html", context)
 
-    def post(self, request, uidb64):
+    def post(self, request, uidb64, token):
         uid = urlsafe_base64_decode(uidb64)
         user = TasksUser.objects.get(pk=uid)
         form = SetPasswordForm(user=user, data=request.POST)
@@ -300,8 +294,7 @@ class CustomConfirmPasswordReset(View):
             update_session_auth_hash(request, form.user)
             logout(request)
             context = {"base_template": "main.html"}
-            return render(request, "registration/password_change_done.html", context)
+            return render(request, "registration/password_reset_complete.html", context)
         else:
             context = {"form": form, "base_template": "main.html"}
-
             return render(request, "registration/password_reset_confirm.html", context)

@@ -1,7 +1,9 @@
 from django.test import TestCase
+from django.core import mail
 from django.contrib.auth import get_user_model
 from .models import TasksUser
 from django.urls import reverse
+import re
 
 # Create your tests here.
 
@@ -59,6 +61,81 @@ class TestAuthentication(TestCase):
             follow=True,
         )
 
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "tasks.html")
+        self.assertContains(response, "All Tasks")
+
+    def test_user_password_change(self):
+        response = self.client.post(
+            reverse("login"),
+            {"username": self.user.username, "password": self.user.password},
+            follow=True,
+        )
+        self.assertEqual(response.status_code, 200)
+        response = self.client.post(
+            reverse("password-change"),
+            {
+                "old_password": self.user.password,
+                "new_password1": "pass123456789",
+                "new_password2": "pass123456789",
+            },
+        )
+        self.client.get(reverse("logout"))
+        response = self.client.post(
+            reverse("login"),
+            {"username": self.user.username, "password": "pass123456789"},
+            follow=True,
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_user_password_reset(self):
+        response = self.client.post(
+            reverse("password-reset-form"), {"email": "test@email.com"}, follow=True
+        )
+        self.assertTemplateUsed(response, "registration/password_reset_done.html")
+
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(
+            mail.outbox[0].subject, "Reset your Tasks App account password"
+        )
+
+        mail_body = mail.outbox[0].body
+
+        args = (
+            re.search(
+                "[\S\s]+(?<=/accounts/confirm_password_reset/)([\S]+)/", mail_body
+            )
+            .group(1)
+            .split("/")
+        )
+
+        uid = args[0]
+        token = args[1]
+
+        response = self.client.get(
+            "%s"
+            % reverse("confirm-password-reset", kwargs={"uidb64": uid, "token": token}),
+            follow=True,
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "registration/password_reset_confirm.html")
+        response = self.client.post(
+            "%s"
+            % reverse("confirm-password-reset", kwargs={"uidb64": uid, "token": token}),
+            {
+                "new_password1": "pass12345678910",
+                "new_password2": "pass12345678910",
+            },
+            follow=True,
+        )
+
+        self.assertTemplateUsed(response, "registration/password_reset_complete.html")
+
+        response = self.client.post(
+            reverse("login"),
+            {"username": self.user.username, "password": self.user.password + "678910"},
+            follow=True,
+        )
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "tasks.html")
         self.assertContains(response, "All Tasks")
