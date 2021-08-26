@@ -6,7 +6,11 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.encoding import force_bytes
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm
+from django.contrib.auth.forms import (
+    PasswordChangeForm,
+    PasswordResetForm,
+    SetPasswordForm,
+)
 from .models import Profile, TasksUser
 from django.views import View
 from .forms import MyUserCreationForm, MyUserProfileForm
@@ -233,7 +237,7 @@ class CustomPasswordResetView(View):
         email = request.POST.get("email")
         if form.is_valid():
             try:
-                TaskUser.objects.get(email=email)
+                TasksUser.objects.get(email=email)
             except TasksUser.DoesNotExist:
                 context = {
                     "base_template": "main.html",
@@ -242,7 +246,7 @@ class CustomPasswordResetView(View):
                 }
                 return render(request, "registration/password_reset_form.html", context)
             else:
-                taskuser = TaskUser.objects.get(email=email)
+                tasksuser = TasksUser.objects.get(email=email)
                 protocol = "https" if request.is_secure() else "http"
                 opts = {
                     "use_https": request.is_secure(),
@@ -254,13 +258,50 @@ class CustomPasswordResetView(View):
                         "site_name": "Tasks App",
                         "domain": request.get_host(),
                         "protocol": protocol,
-                        "uid": urlsafe_base64_encode(force_bytes(taskuser.pk)),
-                        "token": token_generator.make_token(user),
+                        "uid": urlsafe_base64_encode(force_bytes(tasksuser.pk)),
+                        "token": token_generator.make_token(tasksuser),
                     },
                 }
                 form.save(**opts)
                 return render(
                     request,
-                    "register/password_reset_done.html",
+                    "registration/password_reset_done.html",
                     {"base_template": "main.html"},
                 )
+
+
+class CustomConfirmPasswordReset(View):
+    def get(self, request, uidb64, token):
+        try:
+            uid = urlsafe_base64_decode(uidb64)
+            user = TasksUser.objects.get(pk=uid)
+        except (TasksUser.DoesNotExist, TypeError, ValueError, OverflowError):
+            user = None
+
+        else:
+            if token_generator.check_token(user, token) and user is not None:
+                form = SetPasswordForm(user=user)
+
+                context = {"form": form, "base_template": "base.html"}
+
+                return render(
+                    request, "registration/password_reset_confirm.html", context
+                )
+
+        context = {"message": "Bad request!", "base_template": "base.html"}
+        return render(request, "error.html", context)
+
+    def post(self, request, uidb64):
+        uid = urlsafe_base64_decode(uidb64)
+        user = TasksUser.objects.get(pk=uid)
+        form = SetPasswordForm(user=user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            logout(request)
+            context = {"base_template": "main.html"}
+            return render(request, "registration/password_change_done.html", context)
+        else:
+            context = {"form": form, "base_template": "main.html"}
+
+            return render(request, "registration/password_reset_confirm.html", context)

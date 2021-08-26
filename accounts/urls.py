@@ -6,6 +6,7 @@ from .views import (
     CustomLoginView,
     CustomProfileView,
     CustomPasswordChangeView,
+    CustomPasswordResetView,
 )
 
 urlpatterns = [
@@ -16,5 +17,8 @@ urlpatterns = [
     path("profile/update/", CustomProfileUpdateView.as_view(), name="profile-update"),
     path(
         "password_change/", CustomPasswordChangeView.as_view(), name="password-change"
+    ),
+    path(
+        "password_reset/", CustomPasswordResetView.as_view(), name="password-reset-form"
     ),
 ]

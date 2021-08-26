@@ -1,0 +1,11 @@
+{% extends base_template %}
+
+{% block title %}Error{% endblock title %}
+{% block main %}
+    <div id="login-form" class="row-cols-3">
+        <div class="col-10 offset-1 col-md-6 offset-md-3">
+            <h1 class="fs-2">Error!</h1>
+        <p>{{ message }}</p>        
+        </div>        
+    </div>
+{% endblock main %}
