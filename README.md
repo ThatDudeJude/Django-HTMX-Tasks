@@ -1,10 +1,10 @@
 # Tasks App
 
-A simple web application for saving and managing notes on tasks.
+A simple web application for planning and saving details on tasks.
 
 ## Project Description
 
-This web application lets users save notes on tasks. The backend is built using the Django framework, relying on its customizable features to design an admin and authentication system. A postgresql database connection is integrated for data storage.  The frontend ui uses the htmx library for handling dynamic behavior.
+This web application lets users write plans on future tasks. Tasks can be prioritized, updated and deleted. The backend is built using the Django framework, relying on its customizable features to design an admin and authentication system. A postgresql database connection is integrated for data storage.  The frontend ui uses the htmx library for handling dynamic behavior.
 
 ### Technology used
 | Technology  |       Version    |      Utility    |
@@ -12,8 +12,8 @@ This web application lets users save notes on tasks. The backend is built using 
 |    Django   |  v3.2.13         | Python based web-framework|
 |   Postgres  | v14.0            | SQL based Relational Database Management System (RDMS)|
 | Psycopg2    |     v2.9.1       | A PostgreSQL database adapter for Python web apps |
-| React       |     v17.0.2      | Javascript-based library for frontend ui design|
-| Cloudinary  |     v1.29.0      | A python library that facilitates access and storage of media files via connection to the Cloudinary Cloud Service. |
+| HTMX       |     v1.8.6      | A Javascript-based library that facilitates access to modern browser features via hypertext for building dynamic frontend uis with minimum or no Javascript|
+
 
 
 ## Installation and Setup
@@ -22,10 +22,10 @@ This web application lets users save notes on tasks. The backend is built using 
 1. Launch your terminal.
 2. Create a new folder and navigate to it.
    ```
-    mkdir ez_pizza
-    cd ez_pizza
+    mkdir Tasks_App
+    cd Tasks_App
    ```
-3. Clone this github repository here: https://github.com/ThatDudeJude/Ez-Pizza.git
+3. Clone this github repository here: https://github.com/ThatDudeJude/Tasks_App
    `
 4. Ensure that [python](https://www.python.org) version v3.8+ and pip is installed in your computer.
 5. Install a postgres server for your OS ([more info here](https://www.postgres.org/download)) if not installed. For windows users, you can add psql.exe to path.
@@ -35,14 +35,7 @@ This web application lets users save notes on tasks. The backend is built using 
    ```
    python3 -m pip install -r requirements.txt
    ```
-9. To use the cloudinary service, create a cloudinary account [here](https://www.cloudinary.com/). Create a folder for storing assets with the folder structure ``ezpizza/users/avatars/`` (you can follow  [this](https://www.cloudinary.com/documentation/dam_folders_collections_sharing#create_folders) cloudinary guide). Upload a [default avatar](https://www.freepik.com/free-photos-vectors/user-avatar) jpg image to that folder and name it __default_avatar.jpg__.
-10. User your cloudinary **cloudname**, **api key**, and **api secret** from your cloudinary account dashboard. Set the respective environment variables (preferably inside a .env file at the project's root level)
-```
-    CLOUD_NAME=[cloudname]
-    API_KEY=[api_key]
-    API_SECRET=[api_secret]
-```
-11.   Set up an smtp service, preferrably [gmail's smtp](https://dev.to/abderrahmanemustapha/how-to-send-email-with-django-and-gmail-in-production-the-right-way-24ab). Add the following variables to your environment
+9.    Set up an smtp service, preferrably [gmail's smtp](https://dev.to/abderrahmanemustapha/how-to-send-email-with-django-and-gmail-in-production-the-right-way-24ab). Add the following variables to your environment
 ```
     DEFAULT_FROM_EMAIL=[youraccount@gmail.com]
     EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
@@ -50,7 +43,7 @@ This web application lets users save notes on tasks. The backend is built using 
     EMAIL_HOST_USER=[youraccount@gmail.com]
     EMAIL_HOST_PASSWORD=[your smtp service account password]        
 ```
-12.   Open a new terminal and create a postgres database for development and testing purposes. 
+1.     Open a new terminal and create a postgres database for development and testing purposes. 
 
 For Mac and Linux users, run :
 ```    
@@ -66,17 +59,17 @@ For Windows users, run:
 ```
 You need to create a role and assign the necessary priviledges
 ```    
-    CREATE USER ez_pizza with password 'ez_pizza_password';        
-    CREATE DATABASE ez_pizza_db;
-    GRANT ALL PRIVILEDGES ON DATABASE ez_pizza_db TO ez_pizza;
-    \connect ez_pizza_db
+    CREATE USER tasks_app with password 'tasks_app_password';        
+    CREATE DATABASE tasks_app_db;
+    GRANT ALL PRIVILEDGES ON DATABASE tasks_app_db TO tasks_app;
+    \connect tasks_app_db
     \conninfo    
     \q
 ```
    
 Now set the environment variables using information from hostname, the ez_pizza password, and the database's `\conninfo` output.
    ```
-   DATABASE_URL=postgres://USERNAME:PASSWORD@HOSTNAME:PORT/ezpizza_db   
+   DATABASE_URL=postgres://USERNAME:PASSWORD@HOSTNAME:PORT/tasks_app_db   
    ``` 
 1.   Add a secret key for the Django app. To generate a secret key, type in ``python3 -c "import secrets; print(secrets.token_hex());" `` and use the output as the secret key.
 ```
@@ -91,20 +84,10 @@ To run the tests make sure to press Ctrl + C to stop the server first and set th
 ```
     EMAIL_BACKEND=django.core.mail.backends.console.EmailBackend
 ```
-For both e2e and unit tests, run
+For unit tests, run
 ```
     python manage.py test
 ```
-
-## Screenshots and visuals
-* Login 
-![Login Demo](/static/assets/Login.gif)
-* Menu
-![Menu Demo](/static/assets/Menu.gif)
-* Shop
-![Shop Demo](/static/assets/Shop.gif)
-* Order
-![Order Demo](/static/assets/Order.gif)
 
 ## Contributing
 Want to contribute? See contributing guidelines [here](/CONTRIBUTING.md).
