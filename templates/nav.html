@@ -2,13 +2,15 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-around">
     <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'home' %}">Tasks App</a>
+        {% if user.is_authenticated %}
         <form class="d-none d-md-flex d-lg-none">
             <input class="form-control me-2" type="search" placeholder="Search Tasks" name="search"
             hx-post="/tasks/search/"
             hx-trigger="keyup changed delay:500ms, search"
             hx-target="#main-div"
             hx-swap="innerHTML">                    
-        </form>            
+        </form>    
+        {% endif %}        
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
             aria-label="Toggle navigation">
@@ -30,7 +32,7 @@
                     hx-target="#main-div"
                     hx-swap="innerHTML"
                     style="cursor: pointer;">Add Task</a>
-                </li>   
+                </li>                   
                 <li class="nav-item mx-md-4 d-md-block d-none">
                 <form class="d-flex d-lg-block d-sm-none">
                     <input class="form-control me-2" type="search" placeholder="Search Tasks" name="search"
@@ -40,7 +42,7 @@
                     hx-swap="innerHTML"
                     >                    
                 </form>
-                </li>
+                </li>                
                 <li class="nav-item mx-md-4 dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
