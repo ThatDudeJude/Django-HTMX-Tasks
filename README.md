@@ -1,10 +1,10 @@
 # Tasks App
 
-A simple web application for planning and saving details on tasks.
+A simple web application for saving short notes on planned tasks.
 
 ## Project Description
 
-This web application lets users write plans on future tasks. Tasks can be prioritized, updated and deleted. The backend is built using the Django framework, relying on its customizable features to design an admin and authentication system. A postgresql database connection is integrated for data storage.  The frontend ui uses the htmx library for handling dynamic behavior.
+This web application lets users write brief notes on tasks. Tasks can be prioritized, updated and deleted. The backend is built using the Django framework, relying on its customizable features to design an admin and authentication system. A postgresql database connection is integrated for data storage.  The frontend ui uses the htmx library for handling dynamic behavior.
 
 ### Technology used
 | Technology  |       Version    |      Utility    |
