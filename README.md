@@ -21,7 +21,7 @@ This web application lets users write brief notes on tasks. Tasks can be priorit
 
 1. Launch your terminal.
 2. Create a new folder and navigate to it.
-   ```
+   ```{task.id + 1}
     mkdir Tasks_App
     cd Tasks_App
    ```
@@ -88,6 +88,14 @@ For unit tests, run
     python manage.py test
 ```
 
+## Screenshots
+### Add Task
+![Add task screenshot](/Screenshots/tasks__add_task.png)
+## View Task
+![View task screenshot](/Screenshots/tasks__view_task.png)
+
+### All Tasks
+![All tasks screenshot](/Screenshots/tasks__all_tasks.png)
 ## Contributing
 Want to contribute? See contributing guidelines [here](/CONTRIBUTING.md).
 

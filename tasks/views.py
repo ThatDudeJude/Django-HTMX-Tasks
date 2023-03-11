@@ -132,7 +132,7 @@ class TasksCreateView(View):
     @method_decorator(login_required)
     def get(self, request):
         form = TaskForm()
-        task = Task.objects.last()
+        # task = Task.objects.last()
         if request.htmx:
             base_template = "main.html"
         else:
@@ -140,9 +140,9 @@ class TasksCreateView(View):
         context = {
             "base_template": base_template,
             "form": form,
-            "action": "Create",
+            "action": "Add Task",
             "url": f"{request.path}",
-            "push_url": f"/task/{task.id + 1}/",
+            "push_url": f"/task/create/",
         }
         return render(request, "task_form.html", context)
 
