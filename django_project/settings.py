@@ -136,6 +136,7 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 ALLOWED_HOSTS = [
     "127.0.0.1",
     ".onrender.com", 
+    "0.0.0.0",
     env.str("LOCAL_NETWORK_HOST", default=None)
 ]
 
