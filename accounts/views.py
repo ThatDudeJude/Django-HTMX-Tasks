@@ -221,7 +221,7 @@ class CustomPasswordResetView(View):
 
         return render(request, "registration/password_reset_form.html", context)
 
-    def post(self, request):
+    def post(self, request):	
         form = PasswordResetForm(request.POST)
         email = request.POST.get("email")
         if form.is_valid():

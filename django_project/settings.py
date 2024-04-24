@@ -135,6 +135,8 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
+    ".onrender.com", 
+    env.str("LOCAL_NETWORK_HOST", default=None)
 ]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

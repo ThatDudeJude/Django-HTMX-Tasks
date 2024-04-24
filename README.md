@@ -25,7 +25,7 @@ This web application lets users write brief notes on tasks. Tasks can be priorit
     mkdir Tasks_App
     cd Tasks_App
    ```
-3. Clone this github repository here: https://github.com/ThatDudeJude/Tasks_App   
+3. Clone this github repository here: https://github.com/ThatDudeJude/Django-HTMX-Tasks
 4. Ensure that [python](https://www.python.org) version v3.8+ and pip is installed in your computer.
 5. Install a postgres server for your OS ([more info here](https://www.postgres.org/download)) if not installed. For windows users, you can add psql.exe to path.
 6. Create a new virtual environment and activate it .For Linux and Mac OS run `python3 -m venv venv && ./venv/bin/activate` . For Windows cmd.exe run `c:\>c:\Python38\python -m venv venv && venv/SCRIPTS/activate.bat` .
