@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
     # Local
-    "accounts",
+    "tasksaccounts",
     "tasks",
 ]
 
@@ -107,7 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = "accounts.TasksUser"
+AUTH_USER_MODEL = "tasksaccounts.TasksUser"
 
 
 # Internationalization

@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from accounts.models import TasksUser 
+from tasksaccounts.models import TasksUser 
 from environs import Env 
 
 env = Env()
