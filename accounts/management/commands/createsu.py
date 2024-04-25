@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from base.models import User 
+from accounts.models import TasksUser 
 from environs import Env 
 
 env = Env()
@@ -9,8 +9,9 @@ class Command(BaseCommand):
     help = "Create a superuser"
 
     def handle(self, *args, **options):
-        if not User.objects.filter(email=env.str("SU_EMAIL")).exists():
-            User.objects.create_superuser(
+        if not TasksUser.objects.filter(email=env.str("SU_EMAIL")).exists():
+            TasksUser.objects.create_superuser(
+                username="that-dude-jude",
                 name="that-dude-jude",
                 email=env.str("SU_EMAIL"),
                 password=env.str("SU_PASSWORD")                
