@@ -11,8 +11,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         if not TasksUser.objects.filter(email=env.str("SU_EMAIL")).exists():
             TasksUser.objects.create_superuser(
-                username="that-dude-jude",
-                name="that-dude-jude",
+                username="that-dude-jude",     
+                name="that-dude-jude",           
                 email=env.str("SU_EMAIL"),
                 password=env.str("SU_PASSWORD")                
             )
